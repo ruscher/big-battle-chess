@@ -80,9 +80,8 @@ func _start(mode: int, opponent: GameConfig.Opponent = GameConfig.Opponent.LOCAL
 func _run() -> void:
 	var settings := get_node_or_null("/root/Settings")
 	check(settings != null, "Settings autoload present")
-	var previous_speed: Variant = settings.get_value("gameplay", "cinematic_speed") if settings else 1.0
 	if settings:
-		settings.set_value("gameplay", "cinematic_speed", 2.0)
+		settings.set_override("gameplay", "cinematic_speed", 2.0)  # session only
 	main = load("res://scenes/main/main.tscn").instantiate()
 	get_tree().root.add_child(main)
 	while not main.booted:
@@ -171,8 +170,6 @@ func _run() -> void:
 	check(session.match_data.records.size() == 0 and session.is_human_turn(), "undo vs AI takes back both plies")
 
 	main._show_menu(true)
-	if settings:
-		settings.set_value("gameplay", "cinematic_speed", previous_speed)
 	await _frames(3)
 	print("integration: %d checks, %d failures, %.1f s" % [checks, failures.size(), (Time.get_ticks_msec() - started) / 1000.0])
 	get_tree().quit(1 if not failures.is_empty() else 0)
