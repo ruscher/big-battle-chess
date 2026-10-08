@@ -44,6 +44,8 @@ func _initialize() -> void:
 			suite.before_each()
 			suite.call(name)
 			count += 1
+		if suite.checks == 0:
+			suite.failures.append("%s: no checks ran (script error?)" % file)
 		total_checks += suite.checks
 		all_failures.append_array(suite.failures)
 		print("  %-28s %3d tests  %5d checks  %6d ms  %s" % [
