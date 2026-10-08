@@ -164,3 +164,16 @@ func ambience(enabled: bool) -> void:
 			_ambience.play()
 	else:
 		_ambience.stop()
+
+
+func _exit_tree() -> void:
+	# Stop every voice so no stream playback outlives the engine.
+	for p in _pool:
+		p.stop()
+		p.stream = null
+	for m in _music_players:
+		m.stop()
+		m.stream = null
+	_ambience.stop()
+	_ambience.stream = null
+	_streams.clear()

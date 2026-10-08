@@ -281,3 +281,11 @@ static func quad(size: Vector2) -> Mesh:
 		m.size = size
 		_meshes[key] = m
 	return _meshes[key]
+
+
+## Releases cached resources (called on shutdown so nothing leaks at exit).
+static func clear_caches() -> void:
+	_materials.clear()
+	_meshes.clear()
+	_hammered_normal = null
+	_fabric_noise = null

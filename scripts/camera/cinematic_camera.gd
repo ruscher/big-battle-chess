@@ -8,6 +8,8 @@ extends Camera3D
 ## Provides fighter anchors: Callable(name: String) -> Vector3.
 var anchor_provider: Callable
 var side_sign: float = 1.0
+## Clearance radius per fighter ("a", "d"); mounted fighters need more room.
+var body_radius: Dictionary = {"a": 0.95, "d": 0.95}
 var dof_allowed: bool = true
 
 var _shot: Dictionary = {}
@@ -222,7 +224,7 @@ func _compute(shot: Dictionary, time: float) -> Array:
 		_:
 			pos = mid + side * 7.0 + up * 2.0
 			look = mid + up * 1.0
-	pos = _avoid_bodies(pos, [a_pos, d_pos])
+	pos = _avoid_bodies(pos, [a_pos, d_pos], [float(body_radius["a"]), float(body_radius["d"])])
 	pos.y = maxf(pos.y, 0.22)
 	var t := Transform3D(Basis(), pos).looking_at(look, Vector3.UP)
 	if roll != 0.0:
@@ -231,13 +233,15 @@ func _compute(shot: Dictionary, time: float) -> Array:
 
 
 ## Keeps the camera outside a cylinder around each fighter (no clipping).
-func _avoid_bodies(pos: Vector3, bodies: Array) -> Vector3:
+func _avoid_bodies(pos: Vector3, bodies: Array, radii: Array) -> Vector3:
 	var p := pos
-	for b: Vector3 in bodies:
+	for i in bodies.size():
+		var b: Vector3 = bodies[i]
+		var r: float = radii[i]
 		var flat := Vector2(p.x - b.x, p.z - b.z)
-		if flat.length() < 0.95 and p.y < b.y + 2.6:
+		if flat.length() < r and p.y < b.y + 3.2:
 			var push := flat.normalized() if flat.length() > 0.001 else Vector2(1, 0)
-			flat = push * 0.95
+			flat = push * r
 			p.x = b.x + flat.x
 			p.z = b.z + flat.y
 	return p

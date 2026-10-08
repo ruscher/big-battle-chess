@@ -71,6 +71,10 @@ func play(request: Dictionary) -> void:
 	arena.visible = true
 	var preset := int(Settings.get_value("graphics", "preset"))
 	camera.dof_allowed = GraphicsQuality.allows_dof(preset)
+	camera.body_radius = {
+		"a": 1.9 if int(request["attacker_type"]) == Chess.KNIGHT else 0.95,
+		"d": 1.9 if int(request["defender_type"]) == Chess.KNIGHT else 0.95,
+	}
 	camera.side_sign = 1.0 if (int(request.get("seed", 0)) & 1) == 0 else -1.0
 	camera.current = true
 	vfx.particle_scale = Settings.particle_scale() * GraphicsQuality.particle_budget(preset)

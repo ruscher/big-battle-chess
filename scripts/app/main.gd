@@ -345,8 +345,8 @@ func _demo_battle(spec: String) -> void:
 	var modes := {"epic": 0, "dynamic": 1, "quick": 2}
 	main_menu.visible = false
 	var request := {
-		"attacker_type": names.get(parts[0], Chess.KNIGHT), "attacker_color": Chess.WHITE,
-		"defender_type": names.get(parts[1] if parts.size() > 1 else "pawn", Chess.PAWN), "defender_color": Chess.BLACK,
+		"attacker_type": names.get(parts[0], Chess.KNIGHT), "attacker_color": int(_cli.get("attacker-color", "0")),
+		"defender_type": names.get(parts[1] if parts.size() > 1 else "pawn", Chess.PAWN), "defender_color": 1 - int(_cli.get("attacker-color", "0")),
 		"mode": modes.get(parts[2] if parts.size() > 2 else "dynamic", 1), "seed": int(_cli.get("seed", "7")),
 		"board_theme": int(Settings.get_value("gameplay", "board_theme")),
 	}
@@ -374,3 +374,10 @@ func _process(delta: float) -> void:
 		if session.match_data:
 			print("[auto] PGN:\n", session.match_data.to_pgn())
 		get_tree().quit()
+
+
+func _exit_tree() -> void:
+	session.end_session()
+	MaterialLibrary.clear_caches()
+	CombatVFX.clear_cache()
+	UiTheme.clear_cache()

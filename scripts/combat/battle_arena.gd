@@ -282,11 +282,11 @@ func set_light_mode(mode: String, color: Color = Color.WHITE) -> void:
 	_mode_color = color
 	match mode:
 		"charge":
-			_key_goal = Color(0.6, 0.5, 0.55)
-			_key_energy_goal = 0.55
+			_key_goal = Color(0.75, 0.62, 0.66)
+			_key_energy_goal = 0.95
 			_rim_goal = color
-			_rim_energy_goal = 3.2
-			_ambient_goal = 0.22
+			_rim_energy_goal = 3.0
+			_ambient_goal = 0.38
 		"finisher":
 			_flash = 1.0 * Settings.flash_scale()
 			_key_goal = Color(1.0, 0.72, 0.5)

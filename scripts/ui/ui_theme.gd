@@ -166,3 +166,10 @@ static func get_theme() -> Theme:
 	t.set_stylebox("separator", "HSeparator", box(GOLD_DIM, Color(0, 0, 0, 0), 0, 0, 0))
 	_theme = t
 	return t
+
+
+static func clear_cache() -> void:
+	_theme = null
+	_title_font = null
+	_body_font = null
+	_bold_font = null

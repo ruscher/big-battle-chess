@@ -447,7 +447,7 @@ func _dissolve(at: Vector3, color: Color, s: float) -> Node3D:
 func _dash_trail(at: Vector3, color: Color, s: float, extra: Dictionary) -> Node3D:
 	var root := Node3D.new()
 	root.position = at
-	var streaks := _particles(int(26 * s) + 6, 0.35, Vector2(0.04, 1.2), color.lerp(Color.WHITE, 0.4), 3.5,
+	var streaks := _particles(int(26 * s) + 6, 0.35, Vector2(0.025, 0.4), color.lerp(Color.WHITE, 0.4), 2.5,
 		Vector2(0.2, 0.6), 30.0, Vector3.ZERO, Vector3.RIGHT, true)
 	(streaks.process_material as ParticleProcessMaterial).emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
 	(streaks.process_material as ParticleProcessMaterial).emission_sphere_radius = 0.5
@@ -505,8 +505,8 @@ func make_aura(color: Color) -> Node3D:
 	pm.gravity = Vector3.ZERO
 	motes.process_material = pm
 	var quad := QuadMesh.new()
-	quad.size = Vector2(0.05, 0.5)
-	var m := _billboard_material(color, 4.0, false).duplicate() as StandardMaterial3D
+	quad.size = Vector2(0.025, 0.22)
+	var m := _billboard_material(color, 2.5, false).duplicate() as StandardMaterial3D
 	m.billboard_mode = BaseMaterial3D.BILLBOARD_FIXED_Y
 	quad.material = m
 	motes.draw_pass_1 = quad
@@ -517,3 +517,7 @@ func make_aura(color: Color) -> Node3D:
 	add_child(root)
 	_set_layers(root)
 	return root
+
+
+static func clear_cache() -> void:
+	_dot_texture = null
