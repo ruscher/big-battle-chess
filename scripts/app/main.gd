@@ -363,7 +363,9 @@ func _run_cli() -> void:
 		await _start_game(c)
 		if _cli.has("clicks"):
 			for sq in str(_cli["clicks"]).split(","):
-				await get_tree().create_timer(1.0).timeout
+				while session.state != GameSession.State.AWAIT_HUMAN:
+					await get_tree().process_frame
+				await get_tree().create_timer(0.4).timeout
 				session._on_square_clicked(Chess.parse_square(sq))
 	elif _cli.has("demo-battle"):
 		_demo_battle(str(_cli["demo-battle"]))
