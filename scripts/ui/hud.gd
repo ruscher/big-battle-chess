@@ -124,11 +124,11 @@ func _ready() -> void:
 
 
 func _build_card(color: int) -> void:
-	var card := UiKit.panel(Vector2(330, 0))
+	var card := UiKit.panel(Vector2(390, 0))
 	card.anchor_left = 0.0 if color == Chess.WHITE else 1.0
 	card.anchor_right = card.anchor_left
-	card.offset_left = 24 if color == Chess.WHITE else -354
-	card.offset_right = 354 if color == Chess.WHITE else -24
+	card.offset_left = 24 if color == Chess.WHITE else -414
+	card.offset_right = 414 if color == Chess.WHITE else -24
 	card.offset_top = 20
 	card.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(card)
@@ -144,7 +144,7 @@ func _build_card(color: int) -> void:
 	var names := UiKit.vbox(0)
 	names.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	top.add_child(names)
-	var name := UiKit.label("", 23)
+	var name := UiKit.label("", 21)
 	name.add_theme_font_override("font", UiTheme.title_font())
 	name.clip_text = true
 	names.add_child(name)

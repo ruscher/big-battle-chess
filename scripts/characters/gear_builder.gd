@@ -39,12 +39,19 @@ static func build_head(head: Node3D, kind: String, color: int) -> void:
 	var umbral := color == Chess.BLACK
 	match kind:
 		"sallet":
-			part(head, MaterialLibrary.sphere(0.125), armor, Vector3(0, 0.12, 0), Vector3.ZERO, Vector3(1, 1.05, 1.12))
-			part(head, MaterialLibrary.cylinder(0.165, 0.185, 0.022), armor, Vector3(0, 0.115, -0.01), Vector3(-8, 0, 0))
-			part(head, MaterialLibrary.box(Vector3(0.17, 0.02, 0.02)), dark, Vector3(0, 0.115, 0.13))
 			if umbral:
-				part(head, MaterialLibrary.prism(Vector3(0.03, 0.14, 0.2)), armor, Vector3(0, 0.27, -0.01), Vector3(0, 90, 0))
+				# Hollow Soldier: deep hood, void face, spiked collar.
+				part(head, MaterialLibrary.sphere(0.135), cloth_alt, Vector3(0, 0.13, -0.015), Vector3.ZERO, Vector3(1.0, 1.18, 1.12))
+				part(head, MaterialLibrary.sphere(0.1), dark, Vector3(0, 0.11, 0.05), Vector3.ZERO, Vector3(0.9, 1.0, 0.75))
+				part(head, MaterialLibrary.cylinder(0.0, 0.05, 0.16, 8), cloth_alt, Vector3(0, 0.3, -0.06), Vector3(-35, 0, 0))
+				for i in 5:
+					var a := (i - 2) * 0.55
+					part(head, MaterialLibrary.cylinder(0.0, 0.022, 0.12, 6), armor,
+						Vector3(sin(a) * 0.13, -0.02, cos(a) * 0.1 - 0.02), Vector3(-30, 0, -rad_to_deg(a) * 0.8))
 			else:
+				part(head, MaterialLibrary.sphere(0.125), armor, Vector3(0, 0.12, 0), Vector3.ZERO, Vector3(1, 1.05, 1.12))
+				part(head, MaterialLibrary.cylinder(0.165, 0.185, 0.022), armor, Vector3(0, 0.115, -0.01), Vector3(-8, 0, 0))
+				part(head, MaterialLibrary.box(Vector3(0.17, 0.02, 0.02)), dark, Vector3(0, 0.115, 0.13))
 				part(head, MaterialLibrary.box(Vector3(0.02, 0.045, 0.24)), trim, Vector3(0, 0.235, 0))
 		"tower":
 			part(head, MaterialLibrary.cylinder(0.145, 0.135, 0.29, 16), armor, Vector3(0, 0.13, 0))
