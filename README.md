@@ -10,7 +10,12 @@ The chess comes first. A complete, tested rules engine decides every move before
 |---|---|---|
 | ![Board](docs/screenshots/board_play.jpg) | ![Charge](docs/screenshots/battle_charge.jpg) | ![Finisher](docs/screenshots/battle_finisher.jpg) |
 
-> **Status: early playable build (v0.1.0).** It is a complete, playable game, but it is not yet AAA quality. Characters, arenas and effects are built procedurally from primitives as an original stand-in art set. See [Roadmap](docs/ROADMAP.md) for what is done and what comes next.
+> **Status: early playable build (v0.1.0).**
+> - **Imported, PBR, skinned characters** (King, Rook, Bishop, Pawn), built locally with a Blender pipeline, are used when their assets are present.
+> - Arenas, effects, the Queen and the Knight are still built procedurally, as an original stand-in art set.
+> - The third-party character models are **not** in this repository (licensing); a fresh clone plays with procedural characters.
+>
+> See [Character pipeline](docs/CHARACTER_PIPELINE.md) and [Roadmap](docs/ROADMAP.md).
 
 ## Features (implemented)
 
