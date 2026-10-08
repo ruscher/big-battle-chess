@@ -1,0 +1,22 @@
+# Godot 4
+.godot/
+/android/
+*.translation
+
+# Exports / builds
+/build/
+/export/
+*.x86_64
+*.exe
+*.pck
+
+# Local-only material
+.backup/
+# Legacy nested prototype (superseded by the root project; kept locally until removed by the owner)
+/big-battle-chess/
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store

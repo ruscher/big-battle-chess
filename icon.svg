@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a2238"/>
+      <stop offset="1" stop-color="#0e0b14"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe6a3"/>
+      <stop offset="0.55" stop-color="#d4a24c"/>
+      <stop offset="1" stop-color="#8a5a1c"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="120" height="120" rx="22" fill="url(#bg)" stroke="#d4a24c" stroke-width="4"/>
+  <!-- crossed blades -->
+  <g stroke="#cfd6e3" stroke-width="7" stroke-linecap="round">
+    <line x1="26" y1="100" x2="98" y2="24"/>
+    <line x1="102" y1="100" x2="30" y2="24"/>
+  </g>
+  <g stroke="url(#gold)" stroke-width="9" stroke-linecap="round">
+    <line x1="22" y1="88" x2="38" y2="104"/>
+    <line x1="106" y1="88" x2="90" y2="104"/>
+  </g>
+  <!-- crowned shield -->
+  <path d="M64 40 L90 48 L88 76 Q84 96 64 108 Q44 96 40 76 L38 48 Z" fill="url(#gold)" stroke="#3b2a12" stroke-width="3"/>
+  <path d="M64 50 L80 55 L79 75 Q76 88 64 96 Q52 88 49 75 L48 55 Z" fill="#1c1626"/>
+  <path d="M50 38 L54 22 L60 32 L64 18 L68 32 L74 22 L78 38 Z" fill="url(#gold)" stroke="#3b2a12" stroke-width="2.5"/>
+  <!-- chess rook silhouette -->
+  <path d="M56 60 h4 v4 h8 v-4 h4 v10 l-3 3 v10 h4 v5 h-18 v-5 h4 v-10 l-3 -3 z" fill="#e9dcc0"/>
+</svg>
