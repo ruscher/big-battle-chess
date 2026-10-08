@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+env:
+  GODOT_VERSION: "4.7.2"
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Godot ${{ env.GODOT_VERSION }}
+        run: |
+          curl -sSfL -o godot.zip "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          unzip -q godot.zip
+          mv Godot_v${GODOT_VERSION}-stable_linux.x86_64 godot
+          ./godot --version
+
+      - name: Import project
+        run: ./godot --headless --path . --import || true
+
+      - name: Unit, rules, perft, AI and choreography tests
+        run: ./godot --headless --path . --script res://tests/run_tests.gd -- --deep
+
+      - name: End-to-end integration test
+        run: ./godot --headless --path . res://tests/integration_test.tscn
+
+  export:
+    needs: tests
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Godot and export templates
+        run: |
+          curl -sSfL -o godot.zip "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          unzip -q godot.zip && mv Godot_v${GODOT_VERSION}-stable_linux.x86_64 godot
+          curl -sSfL -o templates.tpz "https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+          unzip -q templates.tpz -d tmp && mv tmp/templates/* ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable/
+
+      - name: Export Linux and Windows
+        run: |
+          ./godot --headless --path . --import || true
+          mkdir -p build/linux build/windows
+          ./godot --headless --path . --export-release "Linux" build/linux/BigBattleChess.x86_64
+          ./godot --headless --path . --export-release "Windows Desktop" build/windows/BigBattleChess.exe
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: big-battle-chess-builds
+          path: build/

@@ -1,0 +1,229 @@
+keys,en,pt_BR
+MENU_TAGLINE,Every capture is a legend,Cada captura é uma lenda
+MENU_CONTINUE,Continue,Continuar
+MENU_NEW_GAME,New Game,Novo Jogo
+MENU_LOAD_GAME,Load Game,Carregar Jogo
+MENU_CHRONICLE,Chronicle & Replays,Crônicas e Replays
+MENU_SETTINGS,Settings,Configurações
+MENU_CREDITS,Credits & Licenses,Créditos e Licenças
+MENU_QUIT,Quit,Sair
+NG_OPPONENT,Opponent,Adversário
+NG_VS_AI,Player vs AI,Jogador vs IA
+NG_LOCAL,Local multiplayer (same screen),Multijogador local (mesma tela)
+NG_WATCH_AI,Watch AI vs AI,Assistir IA vs IA
+NG_SIDE,Your army,Seu exército
+NG_SIDE_WHITE,"Kingdom of Dawn (White, moves first)","Reino da Aurora (Brancas, começa)"
+NG_SIDE_BLACK,Umbral Dominion (Black),Domínio Umbral (Pretas)
+NG_SIDE_RANDOM,Random,Aleatório
+NG_DIFFICULTY,AI difficulty,Dificuldade da IA
+NG_GM_NOTE,Grandmaster uses Stockfish if it is installed; otherwise the built-in engine plays at maximum strength.,"Grão-Mestre usa o Stockfish se estiver instalado; caso contrário, o motor interno joga em força máxima."
+NG_GM_FOUND,Stockfish found: Grandmaster will use it.,Stockfish encontrado: o Grão-Mestre irá utilizá-lo.
+NG_CINEMATICS,Capture battles,Batalhas de captura
+NG_BOARD,Chessboard,Tabuleiro
+NG_ENVIRONMENT,Battlefield,Cenário
+NG_CLOCK,Chess clock,Relógio
+NG_CLOCK_NONE,No clock,Sem relógio
+NG_START,Begin the Battle,Iniciar a Batalha
+AI_BEGINNER,Beginner,Iniciante
+AI_CASUAL,Casual,Casual
+AI_INTERMEDIATE,Intermediate,Intermediário
+AI_ADVANCED,Advanced,Avançado
+AI_EXPERT,Expert,Especialista
+AI_GRANDMASTER,Grandmaster,Grão-Mestre
+CINE_EPIC,Epic Cinematic (30-50 s),Cinemático Épico (30-50 s)
+CINE_DYNAMIC,Dynamic Cinematic (10-20 s),Cinemático Dinâmico (10-20 s)
+CINE_QUICK,Quick Combat (3-6 s),Combate Rápido (3-6 s)
+CINE_CLASSIC,Classic (strike on the board),Clássico (golpe no tabuleiro)
+CINE_SKIP,Skip (instant),Pular (instantâneo)
+CINE_EPIC_DESC,"Full battle in the Arena of Fate: introduction, duels, climax, finisher and victory.","Batalha completa na Arena do Destino: introdução, duelos, clímax, golpe final e vitória."
+CINE_DYNAMIC_DESC,A condensed battle with the best exchanges and a finishing technique.,Uma batalha condensada com as melhores trocas e uma técnica final.
+CINE_QUICK_DESC,A single decisive strike in the arena.,Um único golpe decisivo na arena.
+CINE_CLASSIC_DESC,Pieces fight briefly on the board itself. No arena.,As peças lutam brevemente no próprio tabuleiro. Sem arena.
+CINE_SKIP_DESC,Captures happen instantly. Pure chess.,As capturas acontecem instantaneamente. Xadrez puro.
+BOARD_MARBLE,White & Black Marble,Mármore Branco e Negro
+BOARD_WOOD,Carved Medieval Wood,Madeira Medieval Entalhada
+BOARD_STONE,Ancient Stone,Pedra Antiga
+BOARD_GOLD,Gold & Obsidian,Ouro e Obsidiana
+BOARD_GOTHIC,Gothic Shadow,Gótico Sombrio
+BOARD_VIKING,Viking War Table,Mesa de Guerra Viking
+BOARD_ROYAL,Royal Ornate,Real Ornamentado
+ENV_ROYAL_HALL,Royal Castle Hall,Salão do Castelo Real
+ENV_SHADOW_FORTRESS,Shadow Fortress,Fortaleza Sombria
+ENV_CATHEDRAL,Cathedral of Light,Catedral da Luz
+ENV_DAWN_RUINS,Ruins at Dawn,Ruínas ao Amanhecer
+GFX_LOW,Low,Baixo
+GFX_MEDIUM,Medium,Médio
+GFX_HIGH,High,Alto
+GFX_ULTRA,Ultra,Ultra
+GFX_CINEMATIC,Cinematic,Cinemático
+TAB_GRAPHICS,Graphics,Gráficos
+TAB_AUDIO,Audio,Áudio
+TAB_GAMEPLAY,Gameplay,Jogabilidade
+TAB_ACCESSIBILITY,Accessibility,Acessibilidade
+TAB_CONTROLS,Controls,Controles
+SET_PRESET,Quality preset,Predefinição de qualidade
+SET_FULLSCREEN,Fullscreen,Tela cheia
+SET_VSYNC,V-Sync,V-Sync
+SET_FPS_LIMIT,Frame rate limit,Limite de quadros
+SET_UNLIMITED,Unlimited,Ilimitado
+SET_RENDER_SCALE,3D render scale,Escala de renderização 3D
+SET_FSR2,Use FSR 2 upscaling (when scale < 100%),Usar upscaling FSR 2 (quando escala < 100%)
+SET_GFX_NOTE,Ultra and Cinematic enable SDFGI global illumination and screen-space indirect lighting. Low renders at reduced resolution with FSR for weaker GPUs.,Ultra e Cinemático ativam iluminação global SDFGI e iluminação indireta em espaço de tela. Baixo renderiza em resolução reduzida com FSR para GPUs mais fracas.
+SET_VOL_MASTER,Master volume,Volume geral
+SET_VOL_MUSIC,Music,Música
+SET_VOL_SFX,Sound effects,Efeitos sonoros
+SET_VOL_AMBIENCE,Ambience,Ambiente
+SET_VOL_VOICE,Voices,Vozes
+SET_VOL_UI,Interface,Interface
+SET_CINEMATIC_MODE,Default capture battles,Batalhas de captura padrão
+SET_CINEMATIC_SPEED,Cinematic speed,Velocidade das cinemáticas
+SET_SHOW_LEGAL,Show legal moves,Mostrar movimentos legais
+SET_SHOW_LAST,Highlight last move,Destacar último movimento
+SET_AUTO_ROTATE,Rotate board for each player (local),Girar tabuleiro para cada jogador (local)
+SET_HINTS,Beginner hints,Dicas para iniciantes
+SET_LANGUAGE,Language,Idioma
+LANG_EN,English,English
+LANG_PT_BR,Português (Brasil),Português (Brasil)
+SET_SHAKE,Camera shake,Tremor de câmera
+SET_REDUCE_FLASHES,Reduce flashes,Reduzir clarões
+SET_REDUCE_MOTION,Reduce motion (no shake),Reduzir movimento (sem tremor)
+SET_PARTICLES,Particle intensity,Intensidade de partículas
+SET_UI_SCALE,Interface scale,Escala da interface
+SET_MOTION_BLUR_NOTE,"Godot 4.7 has no built-in motion blur, so none is applied. Depth of field is used on High and above.","A Godot 4.7 não possui motion blur nativo, portanto nenhum é aplicado. Profundidade de campo é usada a partir do Alto."
+CTRL_SELECT,Select / move,Selecionar / mover
+CTRL_SELECT_KEYS,Left click · Enter/Space · Gamepad A,Clique esquerdo · Enter/Espaço · Gamepad A
+CTRL_CURSOR,Board cursor,Cursor do tabuleiro
+CTRL_CURSOR_KEYS,Arrow keys · D-pad · Left stick,Setas · Direcional · Analógico esquerdo
+CTRL_CAMERA,Rotate / tilt camera,Girar / inclinar câmera
+CTRL_CAMERA_KEYS,"Right drag · Q/E, R/F · Right stick · C resets","Arrastar com botão direito · Q/E, R/F · Analógico direito · C reinicia"
+CTRL_ZOOM,Zoom,Zoom
+CTRL_ZOOM_KEYS,Mouse wheel · +/- · Triggers,Roda do mouse · +/- · Gatilhos
+CTRL_SKIP,Skip cinematic,Pular cinemática
+CTRL_SKIP_KEYS,Space · Enter · Esc · Gamepad A/B,Espaço · Enter · Esc · Gamepad A/B
+CTRL_SPEED,Speed up cinematic (hold),Acelerar cinemática (segurar)
+CTRL_SPEED_KEYS,Shift · Tab · Gamepad X / RB,Shift · Tab · Gamepad X / RB
+CTRL_UNDO,Undo move,Desfazer jogada
+CTRL_UNDO_KEYS,U · Gamepad Back,U · Gamepad Back
+CTRL_PAUSE,Pause menu,Menu de pausa
+CTRL_PAUSE_KEYS,Esc · Gamepad Start,Esc · Gamepad Start
+BTN_BACK,Back,Voltar
+BTN_YES,Yes,Sim
+BTN_NO,No,Não
+BTN_DELETE,Delete,Excluir
+BTN_LOAD,Load,Carregar
+BTN_SAVE,Save,Salvar
+BTN_CANCEL,Cancel,Cancelar
+BTN_COPY_PGN,Copy PGN,Copiar PGN
+BTN_REPLAY,Cinematic Replay,Replay Cinemático
+SAVE_AUTOSAVE,Autosave,Salvamento automático
+LOAD_EMPTY,No saved games yet.,Nenhum jogo salvo ainda.
+CHRONICLE_DESC,Finished games are recorded here. Replay them with all their battles.,Partidas encerradas ficam registradas aqui. Reveja-as com todas as batalhas.
+CHRONICLE_EMPTY,No finished games yet.,Nenhuma partida encerrada ainda.
+CHRONICLE_PLIES,plies,lances
+CREDITS_TEXT,"[b]Big Battle Chess[/b] — an original game made with Godot Engine 4.7.\n\n[b]Design, code, characters, animation, visual effects, music and sound[/b]\nCreated for this project. Characters, armour, weapons, arenas and boards are built procedurally in Godot. Music and sound effects are synthesised by tools/generate_audio.py. All of it is original work under the project license.\n\n[b]Fonts[/b]\nCinzel — © The Cinzel Project Authors, SIL Open Font License 1.1\nEB Garamond — © The EB Garamond Project Authors, SIL Open Font License 1.1\n\n[b]Engine[/b]\nGodot Engine — MIT License, © Juan Linietsky, Ariel Manzur and contributors.\n\n[b]Optional[/b]\nStockfish (GPLv3) is never bundled. If installed on your system, the Grandmaster level talks to it through the UCI protocol.\n\n[b]Inspiration[/b]\nThe classic idea of animated chess battles. No code or assets from other games were used.","[b]Big Battle Chess[/b] — um jogo original feito com a Godot Engine 4.7.\n\n[b]Design, código, personagens, animação, efeitos visuais, música e som[/b]\nCriados para este projeto. Personagens, armaduras, armas, arenas e tabuleiros são construídos proceduralmente na Godot. Música e efeitos sonoros são sintetizados por tools/generate_audio.py. Tudo é trabalho original sob a licença do projeto.\n\n[b]Fontes[/b]\nCinzel — © The Cinzel Project Authors, SIL Open Font License 1.1\nEB Garamond — © The EB Garamond Project Authors, SIL Open Font License 1.1\n\n[b]Motor[/b]\nGodot Engine — Licença MIT, © Juan Linietsky, Ariel Manzur e colaboradores.\n\n[b]Opcional[/b]\nO Stockfish (GPLv3) nunca é distribuído. Se estiver instalado no sistema, o nível Grão-Mestre se comunica com ele pelo protocolo UCI.\n\n[b]Inspiração[/b]\nA ideia clássica de batalhas animadas no xadrez. Nenhum código ou asset de outros jogos foi utilizado."
+HUD_CHRONICLE,Chronicle,Crônica
+HUD_UNDO,Undo,Desfazer
+HUD_REDO,Redo,Refazer
+HUD_OFFER_DRAW,Offer draw,Propor empate
+HUD_CLAIM_DRAW,Claim draw,Reivindicar empate
+HUD_RESIGN,Resign,Desistir
+HUD_CAMERA,View,Vista
+HUD_CAMERA_TIP,Reset the camera (C),Reiniciar a câmera (C)
+HUD_BATTLE_MODE_TIP,How captures are shown,Como as capturas são exibidas
+HUD_MENU,Menu,Menu
+HUD_THINKING,Planning a move…,Planejando a jogada…
+REPLAY_PREV,Previous,Anterior
+REPLAY_NEXT,Next,Próximo
+REPLAY_AUTO,Auto-play,Reprodução
+REPLAY_PAUSE,Pause,Pausar
+TURN_WHITE,Dawn,Aurora
+TURN_BLACK,Umbral,Umbral
+BANNER_CHECK,%s king in check!,Rei de %s em xeque!
+BANNER_TURN,%s to move,Vez de %s
+HELP_GAME_OVER,The battle is over. Review the board or open the menu.,A batalha terminou. Analise o tabuleiro ou abra o menu.
+HELP_SELECTED,Choose a glowing square to move. Red rings are captures.,Escolha uma casa iluminada para mover. Anéis vermelhos são capturas.
+HELP_SELECT_PIECE,Click one of your warriors to see where it can move.,Clique em um de seus guerreiros para ver onde ele pode ir.
+HELP_AI_THINKING,The enemy commander is thinking…,O comandante inimigo está pensando…
+HELP_PROMOTION,Choose what your soldier becomes.,Escolha em que seu soldado se transforma.
+HELP_DRAW_PENDING,A draw has been offered.,Um empate foi proposto.
+HINT_SKIP_CINEMATIC,Space / A: skip   ·   hold Shift / X: speed up,Espaço / A: pular   ·   segure Shift / X: acelerar
+RESULT_WHITE_WINS,The Kingdom of Dawn is victorious,O Reino da Aurora é vitorioso
+RESULT_BLACK_WINS,The Umbral Dominion is victorious,O Domínio Umbral é vitorioso
+RESULT_DRAW,Draw,Empate
+RESULT_VICTORY,Victory!,Vitória!
+RESULT_DEFEAT,Defeat,Derrota
+REASON_CHECKMATE,by checkmate,por xeque-mate
+REASON_STALEMATE,by stalemate,por afogamento
+REASON_INSUFFICIENT,insufficient material,material insuficiente
+REASON_FIFTY,50-move rule (claimed),regra dos 50 lances (reivindicada)
+REASON_SEVENTY_FIVE,75-move rule,regra dos 75 lances
+REASON_THREEFOLD,threefold repetition (claimed),tripla repetição (reivindicada)
+REASON_FIVEFOLD,fivefold repetition,quíntupla repetição
+REASON_RESIGNATION,by resignation,por desistência
+REASON_AGREEMENT,by agreement,por acordo
+REASON_TIMEOUT,on time,por tempo
+REASON_TIMEOUT_INSUFFICIENT,"time ran out, but no mate was possible","o tempo acabou, mas não havia mate possível"
+CONFIRM_RESIGN,Surrender this battle?,Render-se nesta batalha?
+CONFIRM_MAIN_MENU,Leave to the main menu? The game is autosaved.,Voltar ao menu principal? A partida é salva automaticamente.
+CONFIRM_QUIT,Quit Big Battle Chess? The game is autosaved.,Sair do Big Battle Chess? A partida é salva automaticamente.
+PAUSE_TITLE,Paused,Pausado
+PAUSE_RESUME,Resume,Continuar
+PAUSE_SAVE,Save Game,Salvar Jogo
+PAUSE_MAIN_MENU,Main Menu,Menu Principal
+PROMO_TITLE,Heroic Promotion,Promoção Heroica
+PROMO_DESC,Your soldier reached the far rank. Choose a new rank:,Seu soldado chegou à última fileira. Escolha a nova patente:
+DRAW_OFFER_QUESTION,%s offers a draw. Do you accept?,%s propõe empate. Você aceita?
+DRAW_ACCEPT,Accept draw,Aceitar empate
+DRAW_DECLINE,Keep fighting,Continuar lutando
+GAMEOVER_STATS,%d plies played · %d captures,%d lances jogados · %d capturas
+GAMEOVER_REMATCH,Rematch,Revanche
+GAMEOVER_REVIEW,Review the board,Analisar o tabuleiro
+MSG_AI_ACCEPTS_DRAW,The enemy accepts the draw.,O inimigo aceita o empate.
+MSG_AI_DECLINES_DRAW,The enemy declines the draw.,O inimigo recusa o empate.
+MSG_NO_MOVES_FOR_PIECE,This warrior has no legal moves.,Este guerreiro não tem movimentos legais.
+MSG_DRAW_OFFERED,Draw offered.,Empate proposto.
+MSG_PGN_COPIED,PGN copied to the clipboard.,PGN copiado para a área de transferência.
+MSG_SAVED,Game saved.,Jogo salvo.
+MSG_SAVE_FAILED,Could not save the game.,Não foi possível salvar o jogo.
+MSG_LOAD_FAILED,This save could not be loaded.,Não foi possível carregar este jogo.
+MSG_LOADED,Game loaded.,Jogo carregado.
+PLAYER_AI,AI · %s,IA · %s
+PLAYER_YOU,You,Você
+PLAYER_WHITE,Dawn Commander,Comandante da Aurora
+PLAYER_BLACK,Umbral Commander,Comandante Umbral
+FACTION_DAWN,Kingdom of Dawn,Reino da Aurora
+FACTION_UMBRAL,Umbral Dominion,Domínio Umbral
+UNIT_DAWN_PAWN,Dawn Footman,Infante da Aurora
+UNIT_DAWN_KNIGHT,Lance Knight,Cavaleiro Lanceiro
+UNIT_DAWN_BISHOP,War Cleric,Clérigo de Guerra
+UNIT_DAWN_ROOK,Bastion Guardian,Guardião do Bastião
+UNIT_DAWN_QUEEN,Sun Queen,Rainha Solar
+UNIT_DAWN_KING,Dawn King,Rei da Aurora
+UNIT_UMBRAL_PAWN,Hollow Soldier,Soldado Oco
+UNIT_UMBRAL_KNIGHT,Nightmare Rider,Cavaleiro do Pesadelo
+UNIT_UMBRAL_BISHOP,Eclipse Priest,Sacerdote do Eclipse
+UNIT_UMBRAL_ROOK,Dread Bulwark,Baluarte do Terror
+UNIT_UMBRAL_QUEEN,Void Empress,Imperatriz do Vazio
+UNIT_UMBRAL_KING,Bone-Crowned Tyrant,Tirano da Coroa de Ossos
+FIN_VALOR_LUNGE,Valor Lunge,Investida do Valor
+FIN_HOLLOW_FANG,Hollow Fang,Presa Oca
+FIN_THUNDER_CHARGE,Thunder Charge,Carga Trovejante
+FIN_NIGHTMARE_CHARGE,Nightmare Stampede,Estouro do Pesadelo
+FIN_SACRED_PILLAR,Pillar of Dawn,Pilar da Aurora
+FIN_UMBRAL_ECLIPSE,Umbral Eclipse,Eclipse Umbral
+FIN_EARTHSHATTER,Earthshatter,Quebra-Terra
+FIN_GRAVEQUAKE,Gravequake,Terremoto Sepulcral
+FIN_CROWN_OF_STORMS,Crown of Storms,Coroa das Tempestades
+FIN_VOID_TEMPEST,Void Tempest,Tempestade do Vazio
+FIN_ROYAL_VERDICT,Royal Verdict,Veredito Real
+FIN_TYRANTS_DECREE,Tyrant's Decree,Decreto do Tirano
+TITLE_LEGENDARY_CAPTURE,Legendary Capture,Captura Lendária
+TITLE_GIANT_SLAYER,Giant Slayer,Matador de Gigantes
+TITLE_STORM_VS_FORTRESS,Storm against Fortress,Tempestade contra Fortaleza
+TITLE_STEEL_VS_FAITH,Steel against Faith,Aço contra Fé
+TITLE_FORTRESS_FALLS_QUEEN,The Fortress Strikes the Crown,A Fortaleza Golpeia a Coroa
+TITLE_MIRROR_OF_FAITH,Mirror of Faith,Espelho da Fé
+TITLE_CLASH_OF_CROWNS,Clash of Crowns,Choque de Coroas
+TITLE_EN_PASSANT,En Passant!,En Passant!
+TITLE_HEROIC_PROMOTION,Heroic Promotion,Promoção Heroica
+TITLE_CHECKMATE,Checkmate,Xeque-mate
