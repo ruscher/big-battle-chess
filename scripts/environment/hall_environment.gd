@@ -23,7 +23,7 @@ const PRESETS := [
 		"sky_top": Color(0.02, 0.01, 0.03), "sky_horizon": Color(0.12, 0.04, 0.08),
 		"ambient": Color(0.35, 0.25, 0.45), "ambient_energy": 0.3,
 		"sun_color": Color(0.7, 0.62, 0.95), "sun_energy": 1.0, "sun_rot": Vector3(-55, 40, 0),
-		"fill_color": Color(0.9, 0.2, 0.25), "fill_energy": 0.45,
+		"fill_color": Color(0.8, 0.3, 0.4), "fill_energy": 0.3,
 		"fog": Color(0.12, 0.06, 0.12), "fog_density": 0.008, "vol_fog": 0.03, "vol_albedo": Color(0.8, 0.6, 1.0),
 		"stone": Color(0.2, 0.19, 0.22), "trim": Color(0.55, 0.12, 0.16),
 		"window": Color(0.85, 0.15, 0.25), "fire": Color(0.85, 0.35, 1.0), "torch_energy": 2.2,
@@ -237,13 +237,15 @@ func _build_architecture(p: Dictionary) -> void:
 				# Shaft of light from each window.
 				var spot := SpotLight3D.new()
 				spot.light_color = glass.albedo_color.clamp(Color(0, 0, 0), Color(1, 1, 1))
-				spot.light_energy = 6.0
+				spot.light_energy = 3.5
+				spot.light_color = spot.light_color.lerp(Color.WHITE, 0.35)
 				spot.spot_range = 32.0
 				spot.spot_angle = 14.0
 				spot.light_volumetric_fog_energy = 3.0
 				spot.light_cull_mask = 1
 				spot.position = Vector3(wx, 12.0, wall_z - zsign * 1.5)
-				spot.look_at_from_position(spot.position, Vector3(wx * 0.3, -0.5, wall_z * 0.15))
+				# Shafts land beside the dais so the board keeps neutral lighting.
+				spot.look_at_from_position(spot.position, Vector3(wx * 0.4 + signf(wx + 0.01) * 6.0, -0.5, wall_z * 0.45))
 				_content.add_child(spot)
 		_mesh(MaterialLibrary.box(Vector3(1.5, 18, 46)), stone, Vector3(-18.5, 8.5, 0))
 		_mesh(MaterialLibrary.box(Vector3(1.5, 18, 46)), stone, Vector3(18.5, 8.5, 0))

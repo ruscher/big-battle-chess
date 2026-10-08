@@ -22,6 +22,8 @@ const DEFAULTS := {
 }
 
 var _config := ConfigFile.new()
+## Session-only values (command line options); never written to disk.
+var _overrides: Dictionary = {}
 var _save_pending: bool = false
 
 
@@ -35,6 +37,8 @@ func _ready() -> void:
 
 
 func get_value(section: String, key: String) -> Variant:
+	if _overrides.has(section + "/" + key):
+		return _overrides[section + "/" + key]
 	var fallback: Variant = DEFAULTS.get(section, {}).get(key)
 	var value: Variant = _config.get_value(section, key, fallback)
 	# Guard against hand-edited files with the wrong type.
@@ -65,6 +69,12 @@ func set_value(section: String, key: String, value: Variant) -> void:
 	if not _save_pending:
 		_save_pending = true
 		_save_deferred.call_deferred()
+
+
+## Temporarily overrides a value for this session without saving it.
+func set_override(section: String, key: String, value: Variant) -> void:
+	_overrides[section + "/" + key] = value
+	changed.emit(section, key)
 
 
 func reset_section(section: String) -> void:

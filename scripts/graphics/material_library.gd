@@ -121,6 +121,14 @@ static func get_material(kind: String, color: int) -> Material:
 			m.albedo_color = Color(0.86, 0.87, 0.9) if color == 0 else Color(0.35, 0.33, 0.38)
 			m.metallic = 1.0
 			m.roughness = 0.14 if color == 0 else 0.22
+		"plinth_glow":
+			var glow: Color = style["trim"] if color == 0 else style["energy_alt"]
+			m.albedo_color = glow
+			m.metallic = 0.8
+			m.roughness = 0.3
+			m.emission_enabled = true
+			m.emission = glow
+			m.emission_energy_multiplier = 0.8 if color == 0 else 1.6
 		"gem":
 			m.albedo_color = style["energy_alt"]
 			m.emission_enabled = true

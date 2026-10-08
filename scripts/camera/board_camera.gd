@@ -11,21 +11,24 @@ const MAX_PITCH := 86.0
 
 var target := Vector3(0, 0.2, 0)
 var yaw: float = 0.0
-var pitch: float = 52.0
-var distance: float = 12.0
+var pitch: float = 50.0
+var distance: float = 10.8
 var user_control: bool = true
 ## Degrees per second of automatic orbit (main menu backdrop).
 var auto_orbit: float = 0.0
+## Shifts the look-at point toward the viewer so the near ranks clear the HUD.
+var lead: float = 1.1
+var _lead_goal: float = 1.1
 
 var _yaw_goal: float = 0.0
-var _pitch_goal: float = 52.0
-var _distance_goal: float = 12.0
+var _pitch_goal: float = 50.0
+var _distance_goal: float = 10.8
 var _target_goal := Vector3(0, 0.2, 0)
 var _dragging: bool = false
 
 
 func _ready() -> void:
-	fov = 42.0
+	fov = 40.0
 	near = 0.05
 	far = 400.0
 	_apply(1.0)
@@ -42,13 +45,15 @@ func face_side(color: int, instant: bool = false) -> void:
 
 
 func reset_view(color: int) -> void:
-	_pitch_goal = 52.0
-	_distance_goal = 12.0
+	_lead_goal = 1.1
+	_pitch_goal = 50.0
+	_distance_goal = 11.2
 	_target_goal = Vector3(0, 0.2, 0)
 	face_side(color)
 
 
 func set_framing(new_pitch: float, new_distance: float, new_target: Vector3, instant: bool = false) -> void:
+	_lead_goal = 0.0
 	_pitch_goal = new_pitch
 	_distance_goal = new_distance
 	_target_goal = new_target
@@ -97,7 +102,9 @@ func _apply(weight: float) -> void:
 	pitch = lerpf(pitch, _pitch_goal, weight)
 	distance = lerpf(distance, _distance_goal, weight)
 	target = target.lerp(_target_goal, weight)
-	global_transform = orbit_transform(yaw, pitch, distance, target)
+	lead = lerpf(lead, _lead_goal, weight)
+	var yr := deg_to_rad(yaw)
+	global_transform = orbit_transform(yaw, pitch, distance, target + Vector3(sin(yr), 0.0, cos(yr)) * lead)
 
 
 static func orbit_transform(y: float, p: float, d: float, center: Vector3) -> Transform3D:

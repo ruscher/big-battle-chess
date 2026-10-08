@@ -34,6 +34,8 @@ var _real: float = 0.0
 var _cue_index: int = 0
 var _ts: float = 1.0
 var _ts_remaining: float = 0.0
+## Ops executed during the last frame (profiling aid).
+var last_frame_ops: PackedStringArray = []
 
 
 func _ready() -> void:
@@ -146,10 +148,13 @@ func _process(delta: float) -> void:
 
 
 func _run_cues() -> void:
+	last_frame_ops.clear()
 	while playing and _cue_index < timeline.cues.size() and float(timeline.cues[_cue_index]["t"]) <= _t:
 		var cue: Dictionary = timeline.cues[_cue_index]
 		_cue_index += 1
+		var t0 := Time.get_ticks_usec()
 		_execute(cue)
+		last_frame_ops.append("%s:%s(%dus)" % [cue["op"], cue.get("kind", cue.get("clip", cue.get("name", cue.get("shot", "")))), Time.get_ticks_usec() - t0])
 
 
 func _execute(cue: Dictionary) -> void:
@@ -431,3 +436,58 @@ func _cleanup() -> void:
 	arena.visible = false
 	camera.current = false
 	Audio.music("board")
+
+
+# --------------------------------------------------------------------------
+# Shader / pipeline pre-warming
+# --------------------------------------------------------------------------
+
+var _warm_nodes: Array[Node] = []
+
+## Renders every fighter archetype and effect once (behind a loading fade)
+## so their shaders and pipelines compile before the first real battle.
+func prewarm_begin() -> void:
+	arena.visible = true
+	camera.current = true
+	camera.global_transform = Transform3D(Basis(), to_global(Vector3(0, 2.2, 9.0))).looking_at(to_global(Vector3(0, 1.0, 0)), Vector3.UP)
+	var i := 0
+	for type in [Chess.PAWN, Chess.KNIGHT, Chess.BISHOP, Chess.ROOK, Chess.QUEEN, Chess.KING]:
+		for color in 2:
+			var rig := CharacterRig.new()
+			add_child(rig)
+			rig.build(type, color)
+			_set_layers(rig, BattleArena.LAYER)
+			rig.position = Vector3(-5.5 + i, 0, -1.0 + color * 1.5)
+			rig.play(&"power_up", 0.0)
+			_warm_nodes.append(rig)
+			i += 1
+	var kinds := ["sparks", "impact", "shockwave", "dust", "slash_arc", "pillar", "pillar_warn", "lightning",
+		"magic_burst", "charge", "dissolve", "dash_trail", "afterimage", "golden_wave", "embers"]
+	for k in kinds.size():
+		vfx.spawn(kinds[k], Vector3(-4.0 + k * 0.6, 1.0, 1.5), Color(1, 0.7, 0.4), 1.0, {})
+	for color in [Color(1, 0.8, 0.4), Color(0.8, 0.2, 1.0)]:
+		var aura := vfx.make_aura(color)
+		aura.position = Vector3(2, 0, 2)
+		_warm_nodes.append(aura)
+	_spawn_projectile_at(Vector3(0, 1.2, 2), Color(1, 0.8, 0.4))
+
+
+func prewarm_end() -> void:
+	for n in _warm_nodes:
+		if is_instance_valid(n):
+			n.queue_free()
+	_warm_nodes.clear()
+	for p in _projectiles:
+		if is_instance_valid(p["node"]):
+			(p["node"] as Node).queue_free()
+	_projectiles.clear()
+	vfx.clear_all()
+	arena.visible = false
+	camera.current = false
+
+
+func _spawn_projectile_at(pos: Vector3, color: Color) -> void:
+	_colors["warm"] = color
+	_spawn_projectile({"who": "warm", "from": "warm_ground", "to": "warm_ground", "dur": 0.5})
+	if not _projectiles.is_empty():
+		(_projectiles[-1]["node"] as Node3D).position = pos

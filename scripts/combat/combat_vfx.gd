@@ -86,8 +86,8 @@ func _set_layers(node: Node) -> void:
 # Building blocks
 # --------------------------------------------------------------------------
 
-func _billboard_material(color: Color, energy: float, soft: bool = true) -> StandardMaterial3D:
-	var key := "%s:%.2f:%s" % [color.to_html(), energy, soft]
+func _billboard_material(color: Color, energy: float, soft: bool = true, streak: bool = false) -> StandardMaterial3D:
+	var key := "%s:%.2f:%s:%s" % [color.to_html(), energy, soft, streak]
 	if _quad_materials.has(key):
 		return _quad_materials[key]
 	var m := StandardMaterial3D.new()
@@ -100,6 +100,9 @@ func _billboard_material(color: Color, energy: float, soft: bool = true) -> Stan
 	m.albedo_texture = _soft_dot() if soft else null
 	m.no_depth_test = false
 	m.disable_receive_shadows = true
+	if streak:
+		m.billboard_mode = BaseMaterial3D.BILLBOARD_FIXED_Y
+		m.billboard_keep_scale = true
 	_quad_materials[key] = m
 	return m
 
@@ -153,12 +156,7 @@ func _particles(amount: int, lifetime: float, size: Vector2, color: Color, energ
 	p.process_material = pm
 	var quad := QuadMesh.new()
 	quad.size = size
-	quad.material = _billboard_material(color, energy, not streak)
-	if streak:
-		var m := (quad.material as StandardMaterial3D).duplicate() as StandardMaterial3D
-		m.billboard_mode = BaseMaterial3D.BILLBOARD_FIXED_Y
-		m.billboard_keep_scale = true
-		quad.material = m
+	quad.material = _billboard_material(color, energy, not streak, streak)
 	p.draw_pass_1 = quad
 	p.emitting = true
 	return p
@@ -506,9 +504,7 @@ func make_aura(color: Color) -> Node3D:
 	motes.process_material = pm
 	var quad := QuadMesh.new()
 	quad.size = Vector2(0.025, 0.22)
-	var m := _billboard_material(color, 2.5, false).duplicate() as StandardMaterial3D
-	m.billboard_mode = BaseMaterial3D.BILLBOARD_FIXED_Y
-	quad.material = m
+	quad.material = _billboard_material(color, 2.5, false, true)
 	motes.draw_pass_1 = quad
 	root.add_child(motes)
 	var light := _light(color, 3.0, 5.0)

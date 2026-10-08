@@ -25,7 +25,7 @@ const STYLES := [
 	{
 		"id": "umbral",
 		"name_key": "FACTION_UMBRAL",
-		"armor": Color(0.085, 0.085, 0.10), "armor_metallic": 0.88, "armor_roughness": 0.36,
+		"armor": Color(0.16, 0.15, 0.18), "armor_metallic": 0.92, "armor_roughness": 0.3,
 		"trim": Color(0.62, 0.30, 0.14),
 		"cloth": Color(0.40, 0.035, 0.055),
 		"cloth_alt": Color(0.14, 0.045, 0.20),

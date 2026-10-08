@@ -43,15 +43,15 @@ func _ready() -> void:
 	_banner.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_banner)
 
-	_moves_panel = UiKit.panel(Vector2(250, 0))
+	_moves_panel = UiKit.panel(Vector2(220, 0))
 	_moves_panel.anchor_left = 1.0
 	_moves_panel.anchor_right = 1.0
 	_moves_panel.anchor_top = 0.0
 	_moves_panel.anchor_bottom = 1.0
-	_moves_panel.offset_left = -278
+	_moves_panel.offset_left = -244
 	_moves_panel.offset_right = -24
 	_moves_panel.offset_top = 170
-	_moves_panel.offset_bottom = -110
+	_moves_panel.offset_bottom = -96
 	add_child(_moves_panel)
 	var mv := UiKit.vbox(6)
 	_moves_panel.add_child(mv)
@@ -71,7 +71,7 @@ func _ready() -> void:
 	_bar.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
 	_bar.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	_bar.grow_vertical = Control.GROW_DIRECTION_BEGIN
-	_bar.offset_bottom = -22
+	_bar.offset_bottom = -14
 	add_child(_bar)
 	_undo_btn = UiKit.button("HUD_UNDO", func() -> void: session.undo())
 	_redo_btn = UiKit.button("HUD_REDO", func() -> void: session.redo())

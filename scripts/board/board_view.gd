@@ -11,8 +11,8 @@ signal square_hovered(square: int)
 signal cancel_requested
 
 const CELL := 1.0
-const PIECE_SCALE := 0.4
-const KNIGHT_SCALE := 0.31
+const PIECE_SCALE := 0.44
+const KNIGHT_SCALE := 0.34
 const BOARD_SHADER := preload("res://shaders/board_square.gdshader")
 const MARK_SHADER := preload("res://shaders/square_highlight.gdshader")
 
@@ -214,7 +214,7 @@ func create_piece_rig(type: int, color: int) -> CharacterRig:
 	rig.add_child(plinth)
 	var ring := MeshInstance3D.new()
 	ring.mesh = MaterialLibrary.torus(0.78, 0.86)
-	ring.material_override = MaterialLibrary.get_material("trim", color)
+	ring.material_override = MaterialLibrary.get_material("plinth_glow", color)
 	ring.position.y = 0.075
 	ring.scale = Vector3(1, 0.5, 1)
 	rig.add_child(ring)

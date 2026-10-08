@@ -28,12 +28,16 @@ var hud: Hud
 var dialogs: GameDialogs
 var overlay: CinematicOverlay
 
+## True once startup (shader prewarm, title screen) has finished.
+var booted: bool = false
 var _in_game: bool = false
 var _cli: Dictionary = {}
 var _env_index: int = -1
 var _elapsed: float = 0.0
 var _shots: Array[float] = []
 var _shot_index: int = 0
+var _frame_count: int = 0
+var _worst_frame_ms: float = 0.0
 
 
 func _ready() -> void:
@@ -46,7 +50,9 @@ func _ready() -> void:
 	_set_environment(int(Settings.get_value("gameplay", "environment")))
 	board.apply_theme(int(Settings.get_value("gameplay", "board_theme")))
 	_apply_graphics()
+	await _prewarm()
 	_show_menu(true)
+	booted = true
 	_run_cli()
 
 
@@ -173,6 +179,19 @@ func _build_ui() -> void:
 # Flow
 # --------------------------------------------------------------------------
 
+## Compiles battle shaders behind a black screen before the title appears.
+func _prewarm() -> void:
+	overlay.fade(1.0, 0.0)
+	main_menu.visible = false
+	hud.visible = false
+	director.prewarm_begin()
+	for i in 6:
+		await get_tree().process_frame
+	director.prewarm_end()
+	board_camera.current = true
+	await get_tree().process_frame
+
+
 func _show_menu(instant: bool = false) -> void:
 	_in_game = false
 	session.end_session()
@@ -188,8 +207,7 @@ func _show_menu(instant: bool = false) -> void:
 	board_camera.set_framing(26.0, 15.0, Vector3(1.5, 0.6, 0), instant)
 	Audio.music("menu")
 	Audio.ambience(true)
-	if not instant:
-		overlay.fade(0.0, 0.5)
+	overlay.fade(0.0, 0.1 if instant else 0.5)
 
 
 func _start_game(config: GameConfig) -> void:
@@ -326,15 +344,27 @@ func _parse_cli() -> void:
 
 func _run_cli() -> void:
 	var modes := {"epic": 0, "dynamic": 1, "quick": 2, "classic": 3, "skip": 4}
+	if _cli.has("novsync"):
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+	if _cli.has("preset"):
+		Settings.set_override("graphics", "preset", int(_cli["preset"]))
 	if _cli.has("cinematic"):
-		Settings.set_value("gameplay", "cinematic_mode", modes.get(_cli["cinematic"], 1))
+		Settings.set_override("gameplay", "cinematic_mode", modes.get(_cli["cinematic"], 1))
 	if _cli.has("autostart"):
 		var c := GameConfig.from_settings()
 		c.opponent = {"pve": GameConfig.Opponent.AI, "pvp": GameConfig.Opponent.LOCAL_PLAYER,
 			"ai_vs_ai": GameConfig.Opponent.AI_VS_AI}.get(_cli["autostart"], GameConfig.Opponent.AI)
 		if _cli.has("ai-level"):
 			c.ai_level = int(_cli["ai-level"])
-		_start_game(c)
+		if _cli.has("board"):
+			c.board_theme = int(_cli["board"])
+		if _cli.has("env"):
+			c.environment = int(_cli["env"])
+		await _start_game(c)
+		if _cli.has("clicks"):
+			for sq in str(_cli["clicks"]).split(","):
+				await get_tree().create_timer(1.0).timeout
+				session._on_square_clicked(Chess.parse_square(sq))
 	elif _cli.has("demo-battle"):
 		_demo_battle(str(_cli["demo-battle"]))
 
@@ -360,6 +390,11 @@ func _demo_battle(spec: String) -> void:
 
 func _process(delta: float) -> void:
 	_elapsed += delta
+	if _elapsed > 2.0:
+		_frame_count += 1
+		_worst_frame_ms = maxf(_worst_frame_ms, delta * 1000.0)
+		if _cli.has("log-hitches") and delta > 0.03:
+			print("[hitch] t=%.2f %.1f ms %s" % [_elapsed, delta * 1000.0, director.last_frame_ops])
 	if _shot_index < _shots.size() and _elapsed >= _shots[_shot_index]:
 		var dir: String = _cli.get("shot-dir", "user://shots")
 		DirAccess.make_dir_recursive_absolute(dir)
@@ -368,9 +403,10 @@ func _process(delta: float) -> void:
 		print("[capture] ", path)
 		_shot_index += 1
 	if _cli.has("quit-after") and _elapsed >= float(_cli["quit-after"]):
-		print("[auto] quitting after %.1f s; state=%s plies=%s fps=%d" % [_elapsed,
+		print("[auto] quitting after %.1f s; state=%s plies=%s avg_fps=%.1f worst_frame=%.1f ms vram=%.0f MB" % [_elapsed,
 			GameSession.State.keys()[session.state], session.match_data.records.size() if session.match_data else 0,
-			Engine.get_frames_per_second()])
+			_frame_count / maxf(0.001, _elapsed - 2.0), _worst_frame_ms,
+			Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED) / 1048576.0])
 		if session.match_data:
 			print("[auto] PGN:\n", session.match_data.to_pgn())
 		get_tree().quit()
