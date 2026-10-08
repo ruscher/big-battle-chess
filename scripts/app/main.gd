@@ -31,6 +31,7 @@ var overlay: CinematicOverlay
 ## True once startup (shader prewarm, title screen) has finished.
 var booted: bool = false
 var _in_game: bool = false
+var _ui_root: Control
 var _cli: Dictionary = {}
 var _env_index: int = -1
 var _elapsed: float = 0.0
@@ -43,6 +44,8 @@ var _worst_frame_ms: float = 0.0
 func _ready() -> void:
 	InputSetup.register()
 	_parse_cli()
+	if _cli.has("procedural-characters"):
+		CharacterLibrary.set_enabled(false)
 	_build_world()
 	_build_logic()
 	_build_ui()
@@ -117,6 +120,7 @@ func _build_ui() -> void:
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.theme = UiTheme.get_theme()
 	layer.add_child(root)
+	_ui_root = root
 
 	hud = Hud.new()
 	hud.name = "HUD"
@@ -184,12 +188,29 @@ func _prewarm() -> void:
 	overlay.fade(1.0, 0.0)
 	main_menu.visible = false
 	hud.visible = false
+	var splash: IntroSplash = null
+	if _wants_intro():
+		splash = IntroSplash.new()
+		_ui_root.add_child(splash)
 	director.prewarm_begin()
 	for i in 6:
 		await get_tree().process_frame
 	director.prewarm_end()
 	board_camera.current = true
 	await get_tree().process_frame
+	if splash != null and is_instance_valid(splash):
+		await splash.finished
+
+
+func _wants_intro() -> bool:
+	if _cli.has("intro"):
+		return true
+	if DisplayServer.get_name() == "headless":
+		return false
+	for key in ["no-intro", "autostart", "demo-battle", "shots", "quit-after"]:
+		if _cli.has(key):
+			return false
+	return true
 
 
 func _show_menu(instant: bool = false) -> void:
@@ -344,8 +365,13 @@ func _parse_cli() -> void:
 
 func _run_cli() -> void:
 	var modes := {"epic": 0, "dynamic": 1, "quick": 2, "classic": 3, "skip": 4}
+	if _cli.has("resolution"):
+		var wh := str(_cli["resolution"]).split("x")
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		DisplayServer.window_set_size(Vector2i(int(wh[0]), int(wh[1])))
 	if _cli.has("novsync"):
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+		Engine.max_fps = 0
 	if _cli.has("preset"):
 		Settings.set_override("graphics", "preset", int(_cli["preset"]))
 	if _cli.has("cinematic"):
@@ -409,6 +435,7 @@ func _process(delta: float) -> void:
 			GameSession.State.keys()[session.state], session.match_data.records.size() if session.match_data else 0,
 			_frame_count / maxf(0.001, _elapsed - 2.0), _worst_frame_ms,
 			Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED) / 1048576.0])
+		print("[auto] retarget %.2f ms/frame" % (SkinnedCharacterRig.retarget_usec / 1000.0 / maxf(1.0, float(Engine.get_process_frames()))))
 		if session.match_data:
 			print("[auto] PGN:\n", session.match_data.to_pgn())
 		get_tree().quit()

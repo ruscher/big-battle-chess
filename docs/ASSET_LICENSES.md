@@ -11,6 +11,29 @@
 | Cinzel font | [google/fonts](https://github.com/google/fonts/tree/main/ofl/cinzel), © The Cinzel Project Authors | SIL OFL 1.1 | License in `assets/fonts/Cinzel-OFL.txt` |
 | EB Garamond font | [google/fonts](https://github.com/google/fonts/tree/main/ofl/ebgaramond), © The EB Garamond Project Authors | SIL OFL 1.1 | License in `assets/fonts/EBGaramond-OFL.txt` |
 
+## Branding
+
+| Asset | Source | Notes |
+|---|---|---|
+| `assets/branding/logo.png`, `logo_intro.ogv`, `icon.png`, `icon_512.png`, `icon.ico` | Official Big Battle Chess logo provided by the project owner (`personagens/Logo/`) | Adapted only in format: soft alpha edges, square crest crop for icons, GIF converted to Theora video. The design is unchanged. |
+
+## Local-only character models (not in Git)
+
+The project owner provided four models (2026-10-08) in `personagens/`, which is git-ignored. The models derived from them are written to `assets/characters_ext/` (also git-ignored) by `tools/blender/build_characters.py`.
+
+| Model | Probable source | Licence status | Decision |
+|---|---|---|---|
+| Iron Juggernaut Game Ready (FBX, Unity/Unreal textures) | CGTrader free model | **Not verifiable automatically** (the site blocks scripted access). CGTrader free models usually use the Royalty Free licence: use inside a product is allowed, redistribution of the source files is not. The archive also contains Epic Games mannequin content (UE5 Manny/Quinn animations and body) under the Unreal Engine EULA. | Used for the Rook, **locally only**. The Epic mannequin animations and body are **excluded**. |
+| Dark Fantasy Sun Knight Warrior (FBX/OBJ/BLEND + PBR) | CGTrader free model | Not verified (as above) | Used for the King, locally only |
+| Medieval Knight Warrior Character (GLB/FBX/BLEND + 4K PBR) | CGTrader free model (the texture naming suggests AI-assisted generation) | Not verified (as above) | Used for the Pawn and Bishop, locally only |
+| Warrior Woman (C4D/FBX/DAE/3DS...) | CGTrader / TurboSquid free model | Not verified. It contains DAZ 3D "V6 Anna" (Victoria 6) textures, which suggests a derivative of DAZ content, and DAZ licences restrict redistribution. | **Not used** (technical and licence reasons) |
+
+**Before shipping a build or making these models public**, the owner must open each product page, confirm the licence (commercial use, redistribution inside a built game, attribution) and record the result here. Until then:
+
+- the models and their derivatives stay out of the public repository;
+- the game falls back to its original procedural characters when they are absent;
+- screenshots that show them are product images, not redistribution of the files.
+
 ## Optional, never bundled
 
 | Component | License | How it is used |

@@ -12,6 +12,10 @@
 
 # Local-only material
 .backup/
+# Third-party source models and the meshes derived from them (licenses do
+# not allow public redistribution). Rebuild with tools/blender/build_characters.py
+/personagens/
+/assets/characters_ext/
 # Legacy nested prototype (superseded by the root project; kept locally until removed by the owner)
 /big-battle-chess/
 
@@ -20,3 +24,7 @@
 .idea/
 *.swp
 .DS_Store
+
+# Python caches
+__pycache__/
+*.pyc

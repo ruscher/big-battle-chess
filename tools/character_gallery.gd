@@ -7,6 +7,10 @@ var _frames := 0
 var _out := "user://character_gallery.png"
 var _clip := &"idle"
 var _view := "front"
+var _procedural := false
+var _types: Array = []
+var _clips: Array = []
+var _time := 0.0
 
 
 func _initialize() -> void:
@@ -17,6 +21,15 @@ func _initialize() -> void:
 			_clip = StringName(a.trim_prefix("--clip="))
 		elif a.begins_with("--view="):
 			_view = a.trim_prefix("--view=")
+		elif a == "--procedural":
+			_procedural = true
+		elif a.begins_with("--types="):
+			for t in a.trim_prefix("--types=").split(","):
+				_types.append(int(t))
+		elif a.begins_with("--clips="):
+			_clips = Array(a.trim_prefix("--clips=").split(","))
+		elif a.begins_with("--time="):
+			_time = float(a.trim_prefix("--time="))
 	root.size = Vector2i(1920, 1080)
 	var world := Node3D.new()
 	root.add_child(world)
@@ -56,12 +69,33 @@ func _initialize() -> void:
 	floor_mesh.material_override = fm
 	world.add_child(floor_mesh)
 	var types := [Chess.PAWN, Chess.KNIGHT, Chess.BISHOP, Chess.ROOK, Chess.QUEEN, Chess.KING]
+	if not _types.is_empty():
+		types = _types
+	if not _clips.is_empty():
+		# One type, one column per clip, both colours.
+		for color in 2:
+			for i in _clips.size():
+				var r: CharacterRig = CharacterRig.new() if _procedural else CharacterLibrary.create(types[0], color, "arena")
+				world.add_child(r)
+				r.build(types[0], color)
+				r.position = Vector3((i - (_clips.size() - 1) * 0.5) * 1.9, 0, -1.4 if color == 1 else 1.0)
+				r.play(StringName(_clips[i]), 0.0)
+				if _time > 0.0:
+					r.animator.advance(_time)
+		var c := Camera3D.new()
+		c.fov = 38
+		world.add_child(c)
+		c.position = Vector3(0, 2.1, 3.4 + _clips.size() * 1.1)
+		c.look_at_from_position(c.position, Vector3(0, 1.0, -0.3))
+		c.current = true
+		return
 	for color in 2:
 		for i in types.size():
-			var rig := CharacterRig.new()
+			var rig: CharacterRig = CharacterRig.new() if _procedural else CharacterLibrary.create(types[i], color, "arena")
+
 			world.add_child(rig)
 			rig.build(types[i], color)
-			rig.position = Vector3((i - 2.5) * 1.6, 0, -1.6 if color == 1 else 1.0)
+			rig.position = Vector3((i - (types.size() - 1) * 0.5) * 1.6, 0, -1.6 if color == 1 else 1.0)
 			if _view == "side":
 				rig.rotation_degrees.y = 90
 			rig.play(_clip, 0.0)

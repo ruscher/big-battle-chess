@@ -99,7 +99,7 @@ func skip() -> void:
 
 
 func _spawn(who: String, type: int, color: int, x: float) -> void:
-	var rig := CharacterRig.new()
+	var rig := CharacterLibrary.create(type, color, "arena")
 	rig.name = "Fighter_" + who
 	add_child(rig)
 	rig.build(type, color)
@@ -453,7 +453,7 @@ func prewarm_begin() -> void:
 	var i := 0
 	for type in [Chess.PAWN, Chess.KNIGHT, Chess.BISHOP, Chess.ROOK, Chess.QUEEN, Chess.KING]:
 		for color in 2:
-			var rig := CharacterRig.new()
+			var rig := CharacterLibrary.create(type, color, "arena")
 			add_child(rig)
 			rig.build(type, color)
 			_set_layers(rig, BattleArena.LAYER)

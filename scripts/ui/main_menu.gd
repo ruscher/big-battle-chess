@@ -38,24 +38,21 @@ func _ready() -> void:
 	var left := UiKit.vbox(14)
 	left.anchor_top = 0.0
 	left.anchor_bottom = 1.0
-	left.offset_left = 80
-	left.offset_right = 600
-	left.offset_top = 70
+	left.offset_left = 60
+	left.offset_right = 660
+	left.offset_top = 40
 	left.offset_bottom = -40
 	add_child(left)
-	var big := UiKit.title("BIG BATTLE", 74)
-	big.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
-	left.add_child(big)
-	var chess := UiKit.title("CHESS", 104, Color(1.0, 0.85, 0.52))
-	chess.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
-	chess.add_theme_constant_override("line_spacing", -20)
-	left.add_child(chess)
+	left.add_child(_logo())
 	var tagline := UiKit.caption("MENU_TAGLINE", 19)
+	tagline.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	tagline.custom_minimum_size = Vector2(560, 0)
 	left.add_child(tagline)
 	left.add_child(UiKit.separator())
 
 	_menu = UiKit.vbox(12)
 	_menu.custom_minimum_size = Vector2(380, 0)
+	_menu.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	left.add_child(_menu)
 	_continue_btn = UiKit.button("MENU_CONTINUE", func() -> void: continue_requested.emit(), 380)
 	_menu.add_child(_continue_btn)
@@ -82,6 +79,25 @@ func _ready() -> void:
 	_content.offset_right = -40
 	add_child(_content)
 	refresh()
+
+
+## Official logo (assets/branding/logo.png) with a slow, warm "torch-lit"
+## breathing glow. Falls back to the text title if the image is missing.
+func _logo() -> Control:
+	const PATH := "res://assets/branding/logo.png"
+	if not ResourceLoader.exists(PATH):
+		return UiKit.title("BIG BATTLE CHESS", 64)
+	var logo := TextureRect.new()
+	logo.texture = load(PATH)
+	logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	logo.custom_minimum_size = Vector2(580, 316)
+	logo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	logo.pivot_offset = logo.custom_minimum_size * 0.5
+	var tw := logo.create_tween().set_loops()
+	tw.tween_property(logo, "self_modulate", Color(1.12, 1.06, 0.98), 2.4).set_trans(Tween.TRANS_SINE)
+	tw.tween_property(logo, "self_modulate", Color(1.0, 1.0, 1.0), 2.4).set_trans(Tween.TRANS_SINE)
+	return logo
 
 
 func refresh() -> void:

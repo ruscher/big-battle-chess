@@ -126,7 +126,7 @@ func _travel(rig: CharacterRig, from: Vector3, to: Vector3, piece_type: int) -> 
 	rig.position = to
 	rig.play(&"idle", 0.25)
 	var color := Chess.piece_color(int(rig.get_meta("piece")))
-	var goal := BoardView.facing_yaw(color)
+	var goal := BoardView.facing_yaw(color, board.view_yaw())
 	goal = rig.rotation.y + wrapf(goal - rig.rotation.y, -PI, PI)
 	var tw2 := rig.create_tween()
 	tw2.tween_property(rig, "rotation:y", goal, 0.3)

@@ -16,6 +16,9 @@ var distance: float = 10.8
 var user_control: bool = true
 ## Degrees per second of automatic orbit (main menu backdrop).
 var auto_orbit: float = 0.0
+## Default 3/4 viewing angle (degrees): shows the warriors in profile instead
+## of only their backs while keeping every square readable.
+var view_angle: float = 0.0
 ## Shifts the look-at point toward the viewer so the near ranks clear the HUD.
 var lead: float = 1.1
 var _lead_goal: float = 1.1
@@ -36,7 +39,7 @@ func _ready() -> void:
 
 ## Turns the view to `color`'s side of the board.
 func face_side(color: int, instant: bool = false) -> void:
-	var goal := 0.0 if color == Chess.WHITE else 180.0
+	var goal := (0.0 if color == Chess.WHITE else 180.0) + view_angle
 	# Take the shortest way around.
 	var diff := wrapf(goal - _yaw_goal, -180.0, 180.0)
 	_yaw_goal += diff
@@ -45,9 +48,9 @@ func face_side(color: int, instant: bool = false) -> void:
 
 
 func reset_view(color: int) -> void:
-	_lead_goal = 1.1
-	_pitch_goal = 50.0
-	_distance_goal = 11.2
+	_lead_goal = 1.35
+	_pitch_goal = 52.0
+	_distance_goal = 12.0
 	_target_goal = Vector3(0, 0.2, 0)
 	face_side(color)
 
@@ -64,7 +67,7 @@ func set_framing(new_pitch: float, new_distance: float, new_target: Vector3, ins
 
 
 func is_white_view() -> bool:
-	return absf(wrapf(yaw, -180.0, 180.0)) < 90.0
+	return absf(wrapf(yaw - view_angle, -180.0, 180.0)) < 90.0
 
 
 func _unhandled_input(event: InputEvent) -> void:

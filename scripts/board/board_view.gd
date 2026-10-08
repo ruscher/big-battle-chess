@@ -11,8 +11,8 @@ signal square_hovered(square: int)
 signal cancel_requested
 
 const CELL := 1.0
-const PIECE_SCALE := 0.44
-const KNIGHT_SCALE := 0.34
+const PIECE_SCALE := 0.5
+const KNIGHT_SCALE := 0.38
 const BOARD_SHADER := preload("res://shaders/board_square.gdshader")
 const MARK_SHADER := preload("res://shaders/square_highlight.gdshader")
 
@@ -185,9 +185,52 @@ func local_to_square(p: Vector3) -> int:
 	return rank * 8 + file
 
 
-## Yaw (radians) for a piece of `color` looking at the enemy side.
-static func facing_yaw(color: int) -> float:
-	return PI if color == Chess.WHITE else 0.0
+## Pieces at rest face the commander's camera (like troops awaiting orders),
+## each army turned slightly the opposite way. The player always sees armour,
+## heraldry and weapons; pieces still turn toward the enemy to move/fight.
+const IDLE_TURN := deg_to_rad(20.0)
+
+var _facing_yaw_applied: float = 0.0
+var _camera_still: float = 0.0
+var _last_camera_yaw: float = 0.0
+
+
+## Yaw (radians) for a piece of `color` at rest, given the camera's yaw.
+static func facing_yaw(color: int, view_yaw: float = 0.0) -> float:
+	return view_yaw + (IDLE_TURN if color == Chess.WHITE else -IDLE_TURN)
+
+
+## Horizontal direction from the board toward the camera, as a yaw.
+func view_yaw() -> float:
+	if camera == null:
+		return 0.0
+	var d := camera.global_position - global_position
+	return atan2(d.x, d.z)
+
+
+func _process(delta: float) -> void:
+	# Re-face the troops once the player has finished rotating the camera.
+	var y := view_yaw()
+	if absf(wrapf(y - _last_camera_yaw, -PI, PI)) > 0.002:
+		_camera_still = 0.0
+	else:
+		_camera_still += delta
+	_last_camera_yaw = y
+	if _camera_still > 0.35 and absf(wrapf(y - _facing_yaw_applied, -PI, PI)) > deg_to_rad(25.0):
+		refresh_facing()
+
+
+## Turns every piece at rest toward the current viewing side (smoothly).
+func refresh_facing(duration: float = 0.6) -> void:
+	var vy := view_yaw()
+	_facing_yaw_applied = vy
+	for sq in pieces:
+		var rig: CharacterRig = pieces[sq]
+		if rig.animator.current_clip != &"idle" and rig.animator.current_clip != &"guard":
+			continue
+		var goal := facing_yaw(Chess.piece_color(int(rig.get_meta("piece"))), vy)
+		goal = rig.rotation.y + wrapf(goal - rig.rotation.y, -PI, PI)
+		rig.create_tween().tween_property(rig, "rotation:y", goal, duration).set_trans(Tween.TRANS_SINE)
 
 
 static func piece_scale(type: int) -> float:
@@ -199,11 +242,15 @@ static func piece_scale(type: int) -> float:
 # --------------------------------------------------------------------------
 
 func create_piece_rig(type: int, color: int) -> CharacterRig:
-	var rig := CharacterRig.new()
+	var rig := CharacterLibrary.create(type, color, "board")
 	rig.name = "%s_%s" % [Chess.color_name(color), Chess.type_name(type)]
 	add_child(rig)
 	rig.build(type, color)
-	rig.scale = Vector3.ONE * piece_scale(type)
+	if rig is SkinnedCharacterRig:
+		# Imported models are real-size: normalise to the procedural 1.9 m reference.
+		rig.scale = Vector3.ONE * piece_scale(type) * 1.9 / float(CharacterLibrary.info(type)["height"])
+	else:
+		rig.scale = Vector3.ONE * piece_scale(type)
 	rig.set_meta("piece", Chess.make_piece(type, color))
 	# Faction plinth improves readability from any camera angle.
 	var plinth := MeshInstance3D.new()
@@ -227,7 +274,8 @@ func create_piece_rig(type: int, color: int) -> CharacterRig:
 func place_rig(rig: CharacterRig, sq: int) -> void:
 	pieces[sq] = rig
 	rig.position = square_to_local(sq)
-	rig.rotation = Vector3(0, facing_yaw(Chess.piece_color(int(rig.get_meta("piece")))), 0)
+	_facing_yaw_applied = view_yaw()
+	rig.rotation = Vector3(0, facing_yaw(Chess.piece_color(int(rig.get_meta("piece"))), _facing_yaw_applied), 0)
 
 
 ## Removes a rig from the square map without freeing it (for animation).
