@@ -171,6 +171,7 @@ func _start_turn() -> void:
 	if config.opponent == GameConfig.Opponent.LOCAL_PLAYER and Settings.get_value("gameplay", "auto_rotate_camera"):
 		board_camera.face_side(match_data.side_to_move())
 		board.flipped_view = match_data.side_to_move() == Chess.BLACK
+		get_tree().create_timer(0.5).timeout.connect(func() -> void: board.refresh_facing())
 	if is_human_turn():
 		_set_state(State.AWAIT_HUMAN)
 	else:

@@ -66,6 +66,48 @@ func _board_matches(label: String) -> void:
 	check(stray == expected, "%s: %d rig nodes alive vs %d pieces (duplicates?)" % [label, stray, expected])
 
 
+func _check_imported_characters() -> void:
+	var types := [Chess.PAWN, Chess.BISHOP, Chess.ROOK, Chess.KING]
+	var available := types.filter(func(t: int) -> bool: return CharacterLibrary.has_archetype(t))
+	print("integration: imported archetypes available: ", available.map(func(t: int) -> String: return String(Chess.type_name(t))))
+	if available.is_empty():
+		return
+	await _start(CinematicMode.Mode.SKIP)
+	for t: int in available:
+		var sq := Chess.parse_square({Chess.PAWN: "e2", Chess.BISHOP: "c1", Chess.ROOK: "a1", Chess.KING: "e1"}[t])
+		var rig := session.board.rig_at(sq)
+		check(rig is SkinnedCharacterRig, "%s uses the imported model" % Chess.type_name(t))
+		if not rig is SkinnedCharacterRig:
+			continue
+		var sk := rig as SkinnedCharacterRig
+		check(sk.skeleton != null, "%s has a skeleton" % Chess.type_name(t))
+		check(sk._bone_of_joint.size() == 17, "%s maps 17 joints (got %d)" % [Chess.type_name(t), sk._bone_of_joint.size()])
+		var hand: int = sk._bone_of_joint["hand_r"]
+		var before := sk.skeleton.get_bone_global_pose(hand).origin
+		sk.play(&"overhead", 0.0)
+		await _frames(25)
+		var after := sk.skeleton.get_bone_global_pose(hand).origin
+		check(before.distance_to(after) > 0.05, "%s skeleton follows the attack clip" % Chess.type_name(t))
+		check(sk.weapon_tip().distance_to(sk.global_position) > 0.05, "%s weapon tip resolves" % Chess.type_name(t))
+		check(sk.height() > 1.5, "%s reports its height" % Chess.type_name(t))
+	# Fallback: with imported characters disabled the procedural rig is used.
+	CharacterLibrary.set_enabled(false)
+	var fallback := CharacterLibrary.create(Chess.ROOK, Chess.WHITE, "board")
+	check(not fallback is SkinnedCharacterRig, "procedural fallback when imported characters are unavailable")
+	fallback.free()
+	CharacterLibrary.set_enabled(true)
+	# Promotion swaps the pawn's appearance for the new piece's model.
+	await _start(CinematicMode.Mode.SKIP, GameConfig.Opponent.LOCAL_PLAYER, "8/P6k/8/8/8/8/8/K7 w - - 0 1")
+	_click("a7")
+	_click("a8")
+	session.choose_promotion(Chess.ROOK)
+	await _wait_turn()
+	var promoted := session.board.rig_at(56)
+	check(promoted != null and int(promoted.get_meta("piece")) == Chess.make_piece(Chess.ROOK, Chess.WHITE), "promoted piece shows a rook")
+	if CharacterLibrary.has_archetype(Chess.ROOK):
+		check(promoted is SkinnedCharacterRig and (promoted as SkinnedCharacterRig).piece_type == Chess.ROOK, "promoted rook uses the rook model")
+
+
 func _start(mode: int, opponent: GameConfig.Opponent = GameConfig.Opponent.LOCAL_PLAYER, fen: String = Chess.START_FEN) -> void:
 	var c := GameConfig.new()
 	c.opponent = opponent
@@ -160,6 +202,9 @@ func _run() -> void:
 	check(session.state == GameSession.State.GAME_OVER, "game over after mate")
 	check(session.match_data.reason == ChessMatch.Reason.CHECKMATE, "result is checkmate")
 	await _board_matches("after mate")
+
+	# 4b. Imported characters (only when the locally built assets exist).
+	await _check_imported_characters()
 
 	# 5. Versus AI: the AI replies and undo returns to the human's turn.
 	await _start(CinematicMode.Mode.SKIP, GameConfig.Opponent.AI)
